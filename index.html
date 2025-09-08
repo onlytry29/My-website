@@ -10,6 +10,12 @@
     footer { text-align: center; padding: 20px; background: #333; color: white; margin-top: 40px; }
     a { color: #4CAF50; text-decoration: none; }
     a:hover { text-decoration: underline; }
+    .session { display: flex; gap: 10px; margin-bottom: 10px; }
+    select { padding: 5px; border: 1px solid #ccc; border-radius: 5px; }
+    button { padding: 10px; border: none; border-radius: 5px; cursor: pointer; }
+    .add-btn { background: #4CAF50; color: white; margin-bottom: 10px; }
+    .calc-btn { background: #2196F3; color: white; }
+    .result { margin-top: 15px; font-weight: bold; font-size: 18px; color: #333; text-align: center; }
   </style>
 </head>
 <body>
@@ -24,6 +30,13 @@
       <li>https://app.example.com</li>
       <li>https://myproject.github.io</li>
     </ul>
+
+    <h2>⏱️ Punch In/Out Time Calculator</h2>
+    <div id="sessions"></div>
+    <button class="add-btn" onclick="addSession()">+ Add Session</button>
+    <br>
+    <button class="calc-btn" onclick="calculateTotal()">Calculate Total</button>
+    <div id="result" class="result"></div>
   </main>
 
   <footer>
@@ -31,6 +44,69 @@
     <a href="privacy.html">Privacy Policy</a> |
     <a href="terms.html">Terms of Service</a>
   </footer>
+
+  <script>
+    function createDropdown(min, max, step = 1) {
+      let options = "";
+      for (let i = min; i <= max; i += step) {
+        options += `<option value="${i}">${i.toString().padStart(2, '0')}</option>`;
+      }
+      return options;
+    }
+
+    function addSession() {
+      const container = document.getElementById("sessions");
+      const div = document.createElement("div");
+      div.className = "session";
+      div.innerHTML = `
+        <label>In: 
+          <select class="in-hour">${createDropdown(1,12)}</select> :
+          <select class="in-minute">${createDropdown(0,59)}</select>
+          <select class="in-ampm"><option value="am">AM</option><option value="pm">PM</option></select>
+        </label>
+        <label>Out: 
+          <select class="out-hour">${createDropdown(1,12)}</select> :
+          <select class="out-minute">${createDropdown(0,59)}</select>
+          <select class="out-ampm"><option value="am">AM</option><option value="pm">PM</option></select>
+        </label>
+      `;
+      container.appendChild(div);
+    }
+
+    function parseDropdown(hour, minute, ampm) {
+      let h = parseInt(hour);
+      let m = parseInt(minute);
+      if (ampm === "pm" && h !== 12) h += 12;
+      if (ampm === "am" && h === 12) h = 0;
+      return h * 60 + m;
+    }
+
+    function calculateTotal() {
+      let totalMinutes = 0;
+      const sessionDivs = document.querySelectorAll(".session");
+
+      sessionDivs.forEach(div => {
+        const inHour = div.querySelector(".in-hour").value;
+        const inMinute = div.querySelector(".in-minute").value;
+        const inAmPm = div.querySelector(".in-ampm").value;
+        const outHour = div.querySelector(".out-hour").value;
+        const outMinute = div.querySelector(".out-minute").value;
+        const outAmPm = div.querySelector(".out-ampm").value;
+
+        let start = parseDropdown(inHour, inMinute, inAmPm);
+        let end = parseDropdown(outHour, outMinute, outAmPm);
+        if (end < start) end += 24 * 60;
+
+        totalMinutes += end - start;
+      });
+
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+      document.getElementById("result").innerText = `Total Time: ${hours} hours ${minutes} minutes`;
+    }
+
+    // Add one session by default
+    addSession();
+  </script>
 </body>
 </html>
-
