@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Welcome to the world of Golu Kumar — where ideas come to life!
-</title>
+  <title>Welcome to the world of Golu Kumar — where ideas come to life!</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #f5f5f5; }
     header { background: #4CAF50; color: white; padding: 20px; text-align: center; }
@@ -21,6 +20,7 @@
 </head>
 <body>
   <header>🚀 Welcome to My Website</header>
+
   <main>
     <h1>Hello World!</h1>
     <p>Golu</p>
@@ -40,9 +40,11 @@
     <div id="result" class="result"></div>
 
     <h2>📅 Calendar</h2>
+
     <!-- Cal inline embed code begins -->
     <div style="width:100%;height:600px;overflow:scroll" id="my-cal-inline"></div>
     <!-- Cal inline embed code ends -->
+
   </main>
 
   <footer>
@@ -115,7 +117,7 @@
     addSession();
   </script>
 
-  <!-- Cal inline script (placed outside your JS block) -->
+  <!-- Cal inline script -->
   <script type="text/javascript">
     (function (C, A, L) { 
       let p = function (a, ar) { a.q.push(ar); }; 
@@ -161,5 +163,53 @@
       "layout":"month_view"
     });
   </script>
+
+  <!-- ================================
+       REACT EMBED CODE (Added Below)
+       ================================= -->
+  <!-- 
+    Install:
+      npm install @calcom/embed-react
+      or
+      yarn add @calcom/embed-react
+  -->
+
+  <!-- React Component Example -->
+
+  <!--
+    import { getCalApi } from "@calcom/embed-react";
+    import { useEffect } from "react";
+
+    export default function MyApp() {
+      useEffect(()=>{
+        (async function () {
+          const cal = await getCalApi({"namespace":"default","embedLibUrl":"https://cal.id/embed-link/embed.js"});
+
+          cal("floatingButton", {
+            "calLink":"abcdef/demo",
+            "calOrigin":"https://cal.id",
+            "config":{"layout":"month_view"},
+            "buttonText":"Book my Cal ID",
+            "hideButtonIcon":false,
+            "buttonPosition":"bottom-right",
+            "buttonColor":"#000000",
+            "buttonTextColor":"#ffffff"
+          });
+
+          cal("ui", {
+            "cssVarsPerTheme":{
+              "light":{"cal-brand":"#007ee5"},
+              "dark":{"cal-brand":"#fafafa"}
+            },
+            "hideEventTypeDetails":false,
+            "layout":"month_view"
+          });
+        })();
+      }, []);
+      
+      return null;
+    };
+  -->
+
 </body>
 </html>
